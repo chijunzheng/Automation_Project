@@ -49,7 +49,7 @@ This automation script will automate the setup of apache2 HTTP web server and en
 		```
 	2. ensure access to S3 bucket
 		```bash
-			aws s3 ls 
+		aws s3 ls 
 		```
 	3. transfer file to s3 bucket 
 		```bash
