@@ -47,7 +47,7 @@ This automation script will automate the setup of apache2 HTTP web server and en
 		```bash
 		sudo apt install awscli -y 
 		```
-	1. ensure access to S3 bucket
+	2. ensure access to S3 bucket
 		```bash
 			aws s3 ls 
 		```
@@ -96,10 +96,10 @@ This automation script will automate the setup of apache2 HTTP web server and en
 		aws s3 cp /tmp/${myname}-httpd-logs-${timestamp}.tar s3://${s3_bucket}/
 
 	```
-	give execution access: 
-		``` chmod +x automation.sh ```
+8. Give execution access: 
+	``` chmod +x automation.sh ```
 
-	run script 
+9. Run script 
 	```bash
 	./automation.sh
 	```
