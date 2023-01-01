@@ -73,15 +73,23 @@ This automation script will automate the setup of apache2 HTTP web server and en
 		fi
 
 
-		#Ensure apache2 service is running
-		if $(systemctl status apache2 | grep -q 'active (running)')
+		#Ensure apache2 service is enabled
+		if $(systemctl status apache2 | grep -q 'disabled')
 		then
-			echo "$package is already running"
+			echo "$package is not enabled. Enabling the service now"
+			systemctl enable apache2
 		else
-			echo "$package is not running. Starting the service now"
-			systemctl start apache2
+			echo "$package is already enabled"
 		fi
 
+		#Ensure apache2 service is running
+		if $(systemctl status apache2 | grep -q 'inactive')
+		then
+			echo "$package is not running. Starting the service now"
+			systemctl start apache2
+		else
+			echo "$package is already active and running"
+		fi
 
 		#Create a tar of logs and move into /tmp directory
 		timestamp=$(date '+%d%m%Y-%H%M%S')
