@@ -97,7 +97,9 @@ This automation script will automate the setup of apache2 HTTP web server and en
 
 	```
 8. Give execution access: 
-	``` chmod +x automation.sh ```
+	```bash
+	chmod +x automation.sh 
+	```
 
 9. Run script 
 	```bash
