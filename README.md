@@ -1,7 +1,5 @@
 # Automation_Project
 
-# Intro 
-
 This automation script will automate the setup of apache2 HTTP web server and ensures the EC2 instance hosting it will not run into storage problems as log files accumulate. The log files under /var/log/apache2/ will be archived and sent to S3 bucket daily. 
 
 1. Log into the EC2 instance
