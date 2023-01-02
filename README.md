@@ -2,6 +2,8 @@
 
 This automation script will automate the setup of apache2 HTTP web server and ensures the EC2 instance hosting it will not run into storage problems as log files accumulate. The log files under /var/log/apache2/ will be archived and sent to S3 bucket daily. 
 
+## Part 2
+
 1. Log into the EC2 instance
 2. update the packages: 	
 	```bash 
@@ -111,3 +113,76 @@ This automation script will automate the setup of apache2 HTTP web server and en
 	```bash
 	./automation.sh
 	```
+	
+	
+## Part 3
+
+1. Check for existance of /var/www/html/inventory.html using [[test]] command, if it exists, append to the table every time a log gets archived. If it does not exist, create the file and append to the table.
+
+```sh
+		FILE=/var/www/html/inventory.html
+		if test -f "$FILE" 
+		then
+			echo "File exists"
+			cat > $FILE << EOF
+			<table>
+                        <col width="150"><col width="150"><col width="150">
+                        <tr>
+                                <td align="middle">httpd-logs</td>
+                                <td align="middle">${timestamp}</td>
+                                <td align="middle">tar</td>
+                                <td align="middle">${size}</td>
+                        </tr>
+
+			</table>
+EOF
+		else
+			echo "File does not exist. Creating the html file."
+			sudo touch $FILE
+			cat > $FILE << EOF
+				<!DOCTYPE html>
+				<html>
+                <table>
+                        <col width="150"><col width="150"><col width="150">
+                        <tr>
+                                <th>Log Type</th>
+                                <th>Date Created</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                        </tr>
+                         <tr>
+                                <td align="middle">httpd-logs</td>
+                                <td align="middle">${timestamp}</td>
+                                <td align="middle">tar</td>
+                                <td align="middle">${size}</td>
+                        </tr>
+
+				</table>
+				</html>
+				
+				EOF
+		fi
+```
+
+2. Ensure that cron job daemon service is active, if not, enable and start it.
+```sh
+if $(systemctl status apache2 | grep -q 'disabled')
+then
+        echo "Cron job daemon is not enabled. Enabling the service now"
+        systemctl enable cron
+        systemctl start cron
+else
+        echo "Cron job daemon is already enabled"
+fi
+
+
+```
+
+3. Create a file in /etc/cron.d/ named "automation" with the following content
+```sh
+
+0 0 * * * root /root/Automation_Project/Automation_Project/automation.sh
+
+```
+	
+
