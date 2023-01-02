@@ -1,0 +1,3 @@
+#This file is present in /etc/cron.d/
+#Runs the script everyday at midnight
+0 0 * * * root /root/Automation_Project/Automation_Project/automation.sh 
